@@ -9,3 +9,6 @@ migrations:
 
 migrate:
 	python manage.py migrate
+
+dev:
+	python manage.py runserver

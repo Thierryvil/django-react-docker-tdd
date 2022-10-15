@@ -1,7 +1,7 @@
 from django.urls import path
 
-from persons import views
+from persons.views import PersonViews
 
 urlpatterns = [
-    path("", views.add_new_person, name="add-persons"),
+    path("", PersonViews.as_view(), name="persons"),
 ]
