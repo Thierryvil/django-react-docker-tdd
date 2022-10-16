@@ -27,8 +27,9 @@ class TestPersonSerializer(TestCase):
     def test_should_be_able_to_add_new_person_with_valid_name(self):
         data = {
             "name": "any name",
+            "cars": [],
         }
         serializer = PersonSerializer(data=data)
-        serializer.is_valid()
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         self.assertEqual(serializer.data["name"], "any name")

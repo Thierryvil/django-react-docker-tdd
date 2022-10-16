@@ -1,14 +1,16 @@
+from cars.serializers import CarSerializer
 from rest_framework import serializers
 
 from persons.models import PersonModel
 
 
 class PersonSerializer(serializers.ModelSerializer):
+    name = serializers.CharField()
+    cars = CarSerializer
+
     class Meta:
         model = PersonModel
-        fields = "__all__"
-
-    name = serializers.CharField()
+        fields = ("id", "name", "cars")
 
     def validate_name(self, value):
         if not value:

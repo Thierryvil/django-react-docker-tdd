@@ -1,18 +1,21 @@
-from django.test import TestCase
+from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
-class TestPersonView(TestCase):
+class TestPersonView(APIClient):
     def setUp(self) -> None:
-        self.client = APIClient()
         self.client.post("/persons/", {"name": "already-name"}, format="json")
+        self.user = User.objects.create(username="testing", password="testing123")
+        self.token = RefreshToken.for_user(self.user)
 
     def test_shoudnt_be_able_to_add_new_person_with_empty_name_with_status_code_400(self):
         data = {
             "name": "",
         }
-        response = self.client.post("/persons/", data, format="json")
+        self.client.credentials
+        response = self.client.post("/persons/", data, format="json", HTTP_AUTHORIZATION=f"Bearer {self.token}")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_shouldnt_be_possible_to_add_a_new_person_with_an_existing_name_with_status_code_400(self):
